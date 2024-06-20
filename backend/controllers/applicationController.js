@@ -8,7 +8,7 @@ export const postApplication = catchAsyncError(async (req, res, next) => {
   const { role } = req.user;
   if (role === "Employer") {
     return next(
-      new ErrorHandler("Employer not allowed to access this resource.", 400) // worongfull access
+      new ErrorHandler("Employer not allowed to access this resource.", 400) // wrongful access
     );
   }
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -16,11 +16,14 @@ export const postApplication = catchAsyncError(async (req, res, next) => {
   }
 
   const { resume } = req.files;
-  const allowedFormats = ["image/png", "image/jpeg", "image/webp"]; //allowing formats
+  const allowedFormats = ["image/png", "image/jpg", "image/jpeg", "image/webp"]; //allowing formats
   if (!allowedFormats.includes(resume.mimetype)) {
     return next(
-      new ErrorHandler("Invalid file type. Please upload a PNG file.", 400)
-    );
+      new ErrorHandler(
+        "Invalid file type. Please upload a PNG/JPEG/WEBP file.",
+        400
+      )
+    );F
   }
   const cloudinaryResponse = await cloudinary.uploader.upload(
     resume.tempFilePath
